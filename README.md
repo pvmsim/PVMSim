@@ -18,7 +18,7 @@ Marco Rivera <sup>i, j</sup>
 <sup>e</sup> Faculty of Informatics, Universidad Complutense de Madrid, Madrid, Spain  
 <sup>f</sup> Institute of Knowledge Technology, Universidad Complutense de Madrid, Madrid, Spain  
 <sup>g</sup> Universidad de Moa, Moa, Cuba  
-<sup>h</sup> Sección de Ciencias Técnicas, Academia de Ciencias de Cuba, La Habana, Cuba
+<sup>h</sup> Sección de Ciencias Técnicas, Academia de Ciencias de Cuba, La Habana, Cuba  
 <sup>i</sup> Laboratorio de Conversión de Energías y Electrónica de Potencia (LCEEP), Universidad de Talca, Curicó, Chile  
 <sup>j</sup> Power Electronics, Machines and Control (PEMC) Research Institute, Faculty of Engineering, Nottingham, United Kingdom  
 
@@ -71,6 +71,7 @@ Each run creates a timestamped directory under outputs/runs/ including:
 
 ## Support
 Email: pvmsim.matlab@gmail.com
+
 
 
 
