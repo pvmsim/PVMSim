@@ -26,8 +26,8 @@ Marco Rivera <sup>i, j</sup>
 PVMSim is a MATLAB application for reproducible parameter extraction of the double-diode photovoltaic model from measured current–voltage curves. It provides an interactive App Designer interface and a scriptable command-line entry point for exploratory use and headless batch runs. Users load measured I–V files, select a PV module definition from a configuration library, and execute a staged optimization to estimate model parameters. Run controls include the seed and iteration budget. Each run exports a configuration snapshot, logs, tabular summaries, MATLAB results, and integrity hashes, enabling traceable reruns and consistent comparisons across I–V datasets and run settings.
 
 ## Requirements
-- MATLAB (tested on MATLAB R2025b)
-- No additional toolboxes required
+- MATLAB (tested on MATLAB R2025b).
+- No additional toolboxes required.
 
 ## Installation
 ### Option 1: Run from source (recommended for development)
@@ -71,6 +71,7 @@ Each run creates a timestamped directory under outputs/runs/ including:
 
 ## Support
 Email: pvmsim.matlab@gmail.com
+
 
 
 
