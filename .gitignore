@@ -1,0 +1,8 @@
+outputs/
+*.asv
+*.m~
+*.autosave
+*.slxc
+*.tmp
+.DS_Store
+Thumbs.db
