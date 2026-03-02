@@ -1,13 +1,13 @@
 # PVMSim: A MATLAB App for Reproducible Double-Diode PV Parameter Extraction
 
 ## Authors
-Liomnis Osorio<sup>a,b,c*</sup>  
-Laurent Duchêne<sup>c</sup>  
-Víctor Tuninetti<sup>d</sup>  
-Mailyn Moreno-Espino<sup>e,f</sup>  
-Carlos Zalazar<sup>b</sup>  
-Rodrigo Irarrázaval<sup>b</sup>  
-Yoalbys Retirado-Mediaceja<sup>h</sup>  
+Liomnis Osorio <sup>a,b,c*</sup>  
+Laurent Duchêne <sup>c</sup>  
+Víctor Tuninetti <sup>d</sup>  
+Mailyn Moreno-Espino <sup>e,f</sup>  
+Carlos Zalazar <sup>b</sup>  
+Rodrigo Irarrázaval <sup>b</sup>  
+Yoalbys Retirado-Mediaceja <sup>h</sup>  
 
 ## Affiliations
 <sup>a</sup> Department of Industrial Processes, Faculty of Engineering, Universidad Católica de Temuco, Temuco, Chile  
@@ -67,4 +67,5 @@ Each run creates a timestamped directory under outputs/runs/ including:
 
 ## Support
 Email: pvmsim.matlab@gmail.com
+
 
