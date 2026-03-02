@@ -7,7 +7,8 @@ Víctor Tuninetti <sup>d</sup>
 Mailyn Moreno-Espino <sup>e, f</sup>  
 Carlos Zalazar <sup>b</sup>  
 Rodrigo Irarrázaval <sup>b</sup>  
-Yoalbys Retirado-Mediaceja <sup>g, h</sup>  
+Yoalbys Retirado-Mediaceja <sup>g, h</sup> 
+Marco Rivera <sup>i, j</sup> 
 
 ## Affiliations
 <sup>a</sup> Department of Industrial Processes, Faculty of Engineering, Universidad Católica de Temuco, Temuco, Chile  
@@ -18,6 +19,8 @@ Yoalbys Retirado-Mediaceja <sup>g, h</sup>
 <sup>f</sup> Institute of Knowledge Technology, Universidad Complutense de Madrid, Madrid, Spain  
 <sup>g</sup> Universidad de Moa, Moa, Cuba  
 <sup>h</sup> Sección de Ciencias Técnicas, Academia de Ciencias de Cuba, La Habana, Cuba
+<sup>i</sup> Laboratorio de Conversión de Energías y Electrónica de Potencia (LCEEP), Universidad de Talca, Curicó, Chile  
+<sup>j</sup> Power Electronics, Machines and Control (PEMC) Research Institute, Faculty of Engineering, Nottingham, United Kingdom  
 
 ## Overview
 PVMSim is a MATLAB application for reproducible parameter extraction of the double-diode photovoltaic model from measured current–voltage curves. It provides an interactive App Designer interface and a scriptable command-line entry point for exploratory use and headless batch runs. Users load measured I–V files, select a PV module definition from a configuration library, and execute a staged optimization to estimate model parameters. Run controls include the seed and iteration budget. Each run exports a configuration snapshot, logs, tabular summaries, MATLAB results, and integrity hashes, enabling traceable reruns and consistent comparisons across I–V datasets and run settings.
@@ -68,6 +71,7 @@ Each run creates a timestamped directory under outputs/runs/ including:
 
 ## Support
 Email: pvmsim.matlab@gmail.com
+
 
 
 
