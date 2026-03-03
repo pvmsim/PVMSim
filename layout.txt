@@ -1,0 +1,44 @@
+PV_DDM_Project/
+│
+├─ README.md
+├─ CITATION.cff
+├─ LICENSE
+├─ run_main.m                      % entry-point CLI reproducible (sin GUI)
+│
+├─ app/
+│  └─ PVMSim.mlapp                  % GUI
+│
+├─ data/
+│  └─ iv/
+│     ├─ example_STM6_40_36.txt
+│     ├─ example_PWP201.txt
+│     └─ example_STP6_120_36.txt
+│
+├─ config/
+│  └─ modules/
+│     ├─ STM6_40_36.txt
+│     ├─ PWP201.txt
+│     └─ STP6_120_36.txt
+│
+├─ core/
+│  ├─ RS7MSA.m     % núcleo (tu “source of truth”)
+│  ├─ RS7MSA_model_current.m         % I(V,theta) / solver (si está separado)
+│  ├─ objective_rmse_obj.m           % define rmse_obj explícito
+│  ├─ metrics_kpis.m                 % RMSE/MAE/IAE/RE con definiciones
+│  ├─ mutate_RS7MSA_phase1.m
+│  ├─ mutate_RS7MSA_phase2.m
+│  └─ utils_rng.m                    % seed handling (meta.Seed)
+││
+├─ outputs/
+│  ├─ runs/
+│  │   ├─ 2026-02-25_STM6_40_36_ID001_seed42/	% this is a example of example_STM6_40_36.txt
+│  │   │   ├─ run_config.json
+│  │   │   ├─ run_results.mat
+│  │   │   ├─ run_summary.csv
+│  │   │   ├─ checksums.sha256
+│  │   │   └─ log.txt
+│  │   └─ ...
+│  └─ exports/                      % export manual desde GUI (CSV/PNG/PDF)
+│
+└─ figures/
+    └─ (opc.) figuras generadas en batch/CLI
