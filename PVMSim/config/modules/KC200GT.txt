@@ -1,0 +1,22 @@
+%% Information from the solar array datasheet (source table)
+fabricante = 'Kyocera';
+modelo     = 'KC200GT';
+Isc_val  = 8.21;                 % Nominal short-circuit current [A]
+Voc_val  = 32.9;                 % Nominal open-circuit voltage [V]
+Impp_val = 7.61;                % Current @ maximum power point [A]
+Vmpp_val = 26.3;                % Voltage @ maximum power point [V]
+Pmax_e   = Vmpp_val*Impp_val;     % Maximum output peak power [W]  (= 200.143 W)
+Kv = -0.123013;                 % Voltage/temperature coefficient [V/K]  (from -0.3739%/°C × Voc)
+Ki = 0.00317727;                 % Current/temperature coefficient [A/K]  (from 0.0387%/°C × Isc)
+Ns   = 54;                 % Number of series cells
+Tref = 25;                % Temperature in source table [°C]
+Gref = 1000;                  % Irradiance in source table [W/m^2]
+module_type = 'Multi-crystalline';      % Module type in source table
+NOCT = NaN;                       % Nominal Operating Cell Temperature [°C] (not provided)
+eff  = NaN;                       % Module efficiency [%] (not provided)
+
+% Cell geometry
+cell_length_mm = NaN;    % Cell length [mm]
+cell_width_mm  = NaN;    % Cell width  [mm]
+module_length_mm = NaN;  % Module length [mm]
+module_width_mm  = NaN;  % Module width  [mm]
