@@ -1,8 +1,24 @@
-outputs/
+# MATLAB editor and autosave files
 *.asv
 *.m~
 *.autosave
-*.slxc
 *.tmp
+
+# MATLAB generated folders
+codegen/
+resources/project/
+
+# OS-generated files
 .DS_Store
 Thumbs.db
+
+# Reproducibility outputs and logs
+outputs/
+
+# Automatically generated figures
+figures/
+
+# Temporary compressed artifacts
+*.zip
+*.7z
+*.rar
