@@ -9,12 +9,11 @@ repository-code: "https://github.com/pvmsim/PVMSim"
 url: "https://github.com/pvmsim/PVMSim"
 abstract: "PVMSim is a MATLAB application for reproducible parameter extraction of the double-diode photovoltaic model from measured current-voltage curves. It provides an interactive App Designer interface and a scriptable command-line workflow for exploratory use and headless batch runs. The software supports traceable reruns through exported configuration snapshots, logs, tabular summaries, MATLAB result files, and integrity hashes."
 keywords:
-  - double-diode model
-  - photovoltaic
-  - current-voltage curves
-  - MATLAB
-  - reproducible workflow
-  - parameter extraction
+  - Double-diode model
+  - I–V curves 
+  - Metaheuristic optimization 
+  - Photovoltaic 
+  - Reproducible workflow
 authors:
   - family-names: "Osorio"
     given-names: "Liomnis"
