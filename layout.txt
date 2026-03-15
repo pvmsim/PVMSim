@@ -10,15 +10,15 @@ PVMSim/
 │
 ├─ data/
 │  └─ iv/
-│     ├─ example_STM6_40_36.txt
-│     ├─ example_PWP201.txt
-│     └─ example_STP6_120_36.txt
+│     ├─ CurvasIV_STM6_40_36.txt
+│     ├─ CurvasIV_PWP201.txt
+│     └─ CurvasIV_SEP120_36P120.txt
 │
 ├─ config/
 │  └─ modules/
-│     ├─ STM6_40_36.txt
+│     ├─ STM6_40.txt
 │     ├─ PWP201.txt
-│     └─ STP6_120_36.txt
+│     └─ SEP120_36P120.txt
 │
 ├─ core/
 │  ├─ RS7MSA.m                     % core algorithm 
@@ -31,7 +31,7 @@ PVMSim/
 │
 ├─ outputs/
 │  ├─ runs/
-│  │   ├─ 2026-02-25_STM6_40_36_ID001_seed42/   % example run based on example_STM6_40_36.txt
+│  │   ├─ 2026-02-25_STM6_40_ID001_seed42/   % example run based on example_STM6_40.txt
 │  │   │   ├─ run_config.json
 │  │   │   ├─ run_results.mat
 │  │   │   ├─ run_summary.csv
