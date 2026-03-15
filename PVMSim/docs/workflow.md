@@ -291,7 +291,7 @@ Use the CLI when the goal is to:
 The GUI Help menu points to:
 
 ```text
-https://github.com/Liomnis/PVMSim/blob/main/docs/workflow.md
+https://github.com/pvmsim/PVMSim/blob/main/PVMSim/docs/workflow.md
 ```
 
 To keep the in-app documentation consistent, this file should be stored in the repository under:
