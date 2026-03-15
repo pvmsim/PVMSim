@@ -1,11 +1,20 @@
 cff-version: 1.2.0
-message: "If you use PVMSim, please cite this software as follows."
-title: "PVMSim: A MATLAB App for Reproducible Double-Diode Parameter Extraction from Measured Photovoltaic Current–Voltage Curves"
+message: "If you use PVMSim, please cite the software repository as follows."
+title: "PVMSim: A MATLAB App for Reproducible Double-Diode Parameter Extraction from Measured Photovoltaic Current-Voltage Curves"
 version: "1.0"
 date-released: 2026-03-15
+type: software
+license: MIT
 repository-code: "https://github.com/pvmsim/PVMSim"
 url: "https://github.com/pvmsim/PVMSim"
-license: "MIT"
+abstract: "PVMSim is a MATLAB application for reproducible parameter extraction of the double-diode photovoltaic model from measured current-voltage curves. It provides an interactive App Designer interface and a scriptable command-line workflow for exploratory use and headless batch runs. The software supports traceable reruns through exported configuration snapshots, logs, tabular summaries, MATLAB result files, and integrity hashes."
+keywords:
+  - double-diode model
+  - photovoltaic
+  - current-voltage curves
+  - MATLAB
+  - reproducible workflow
+  - parameter extraction
 authors:
   - family-names: "Osorio"
     given-names: "Liomnis"
@@ -23,3 +32,27 @@ authors:
     given-names: "Yoalbys"
   - family-names: "Rivera"
     given-names: "Marco"
+references:
+  - type: manual
+    title: "PVMSim User Manual"
+    authors:
+      - family-names: "Osorio"
+        given-names: "Liomnis"
+      - family-names: "Moreno-Espino"
+        given-names: "Mailyn"
+      - family-names: "Duchêne"
+        given-names: "Laurent"
+      - family-names: "Tuninetti"
+        given-names: "Víctor"
+      - family-names: "Zalazar Oliva"
+        given-names: "Carlos"
+      - family-names: "Irarrázaval"
+        given-names: "Rodrigo"
+      - family-names: "Retirado Mediaceja"
+        given-names: "Yoalbys"
+      - family-names: "Rivera"
+        given-names: "Marco"
+    version: "1.0"
+    year: 2026
+    doi: "10.5281/zenodo.19040391"
+    publisher: "Zenodo"
