@@ -44,4 +44,4 @@ PV_DDM_Project/
 │  └─ exports/                      % export manual desde GUI (CSV/PNG/PDF)
 │
 └─ figures/
-    └─ (opc.) figuras generadas en batch/CLI
+    └─ (opc.) % figures generated in batch/CLI mode
