@@ -68,9 +68,11 @@ Each run creates a timestamped directory under outputs/runs/ including:
 - checksums.sha256 (integrity hashes)
 
 ## License
-- Source code: MIT License (see `LICENSE`).
-- Example data and non-code assets: CC0 1.0 (see `LICENSE-CC0.txt`).
-- Third-party notices: see `THIRD_PARTY_NOTICES.md`.
+PVMSim is distributed under the following terms:
+
+- Source code: [MIT License](LICENSE)
+- Example data and non-code assets: [CC0 1.0](LICENSE-CC0.txt)
+- Third-party notices: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
 
 ## Support
 Email: pvmsim.matlab@gmail.com
