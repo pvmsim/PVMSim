@@ -5,7 +5,7 @@
 To begin using PVMSim, the user manual can be accessed through either of the following sources:
 
 - **GitHub repository:** browse the documentation folder in this repository for the latest available manual and supporting files:  
-  <https://github.com/pvmsim/PVMSim/tree/main/Documentation>
+  <https://github.com/pvmsim/PVMSim/blob/main/Documentation/PVMSim_User_Manual.pdf>
 
 - **Zenodo archived version:** access the citable archived release of the user manual here:  
   **Osorio, L., Moreno-Espino, M., Duchêne, L., Tuninetti, V., Zalazar Oliva, C., Irarrázaval, R., Retirado Mediaceja, Y., & Rivera, M. (2026). _PVMSim User Manual_ (1.0). Zenodo.**  
