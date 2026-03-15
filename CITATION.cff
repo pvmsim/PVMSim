@@ -1,25 +1,25 @@
 cff-version: 1.2.0
+message: "If you use PVMSim, please cite this software as follows."
 title: "PVMSim: A MATLAB App for Reproducible Double-Diode Parameter Extraction from Measured Photovoltaic Current–Voltage Curves"
-message: "If you use this software, please cite it as below."
-type: software
-authors:
-  - family-names: Osorio
-    given-names: Liomnis
-  - family-names: Moreno-Espino
-    given-names: Mailyn
-  - family-names: Duchêne
-    given-names: Laurent
-  - family-names: Tuninetti
-    given-names: Víctor
-  - family-names: Zalazar
-    given-names: Carlos
-  - family-names: Irarrázaval
-    given-names: Rodrigo
-  - family-names: Retirado-Mediaceja
-    given-names: Yoalbys
-  - family-names: Rivera
-    given-names: Marco
-version: 1.0.0
-date-released: 2026-03-02
-license: MIT
+version: "1.0"
+date-released: 2026-03-15
+repository-code: "https://github.com/pvmsim/PVMSim"
 url: "https://github.com/pvmsim/PVMSim"
+license: "MIT"
+authors:
+  - family-names: "Osorio"
+    given-names: "Liomnis"
+  - family-names: "Moreno-Espino"
+    given-names: "Mailyn"
+  - family-names: "Duchêne"
+    given-names: "Laurent"
+  - family-names: "Tuninetti"
+    given-names: "Víctor"
+  - family-names: "Zalazar Oliva"
+    given-names: "Carlos"
+  - family-names: "Irarrázaval"
+    given-names: "Rodrigo"
+  - family-names: "Retirado Mediaceja"
+    given-names: "Yoalbys"
+  - family-names: "Rivera"
+    given-names: "Marco"
