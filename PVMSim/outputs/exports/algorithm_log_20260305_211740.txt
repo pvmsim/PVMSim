@@ -1,0 +1,8 @@
+[2026-03-05 21:16:48] INFO  Algorithm settings: Seed=42 | MaxIter=80000
+[2026-03-05 21:16:48] INFO  Meta controls | Seed=42 | MaxIter=80000
+[2026-03-05 21:16:48] INFO  Starting RS7MSA for curve "STR_001" (20 points, G=1000.0 W/m², T=51.0 °C).
+[2026-03-05 21:16:48] INFO  RNG initialized | Seed=42 | Generator=twister
+[2026-03-05 21:16:58] INFO  Top-k seeds sorted for Phase 2. Best RMSE=0.00238609, Worst RMSE=0.0137407, k=20, dropped=0
+[2026-03-05 21:17:10] INFO  Finished RS7MSA | Module | RMSE_I = 0.0017 A
+[2026-03-05 21:17:10] INFO  theta7 (for table) Io1=1.256e-06 Io2=1.585e-06
+[2026-03-05 21:17:11] INFO  Finished parameter extraction. RMSE_I = 0.0017 A
