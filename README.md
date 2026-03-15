@@ -1,23 +1,25 @@
-# PVMSim: A MATLAB App for Reproducible Double-Diode PV Parameter Extraction
+# PVMSim: A MATLAB App for Reproducible Double-Diode Parameter Extraction from Measured Photovoltaic Current–Voltage Curves
 
 ## Authors
 Liomnis Osorio <sup>a, b, c*</sup>  
+Mailyn Moreno-Espino <sup>d, e*</sup>  
 Laurent Duchêne <sup>c</sup>  
-Víctor Tuninetti <sup>d</sup>  
-Mailyn Moreno-Espino <sup>e, f</sup>  
+Víctor Tuninetti <sup>f</sup>  
 Carlos Zalazar <sup>b</sup>  
 Rodrigo Irarrázaval <sup>b</sup>  
 Yoalbys Retirado-Mediaceja <sup>g, h</sup>  
 Marco Rivera <sup>i, j</sup> 
 
+<sup>*</sup> Corresponding authors  
+
 ## Affiliations
 <sup>a</sup> Department of Industrial Processes, Faculty of Engineering, Universidad Católica de Temuco, Temuco, Chile  
 <sup>b</sup> Doctoral Program in Engineering, MacroFaculty of Engineering (UFRO–UBB–UTALCA Consortium), Chile  
 <sup>c</sup> ArGEnCo Department, MSM team, University of Liège, Liège, Belgium  
-<sup>d</sup> Department of Mechanical Engineering, Universidad de La Frontera, Temuco, Chile  
-<sup>e</sup> Faculty of Informatics, Universidad Complutense de Madrid, Madrid, Spain  
-<sup>f</sup> Institute of Knowledge Technology, Universidad Complutense de Madrid, Madrid, Spain  
-<sup>g</sup> Universidad de Moa, Moa, Cuba  
+<sup>d</sup> Faculty of Informatics, Universidad Complutense de Madrid, Madrid, Spain  
+<sup>e</sup> Institute of Knowledge Technology, Universidad Complutense de Madrid, Madrid, Spain  
+<sup>f</sup> Department of Mechanical Engineering, Universidad de La Frontera, Temuco, Chile  
+<sup>g</sup> Universidad de Moa Dr. Antonio Núñez Jiménez, Moa, Cuba  
 <sup>h</sup> Sección de Ciencias Técnicas, Academia de Ciencias de Cuba, La Habana, Cuba  
 <sup>i</sup> Laboratorio de Conversión de Energías y Electrónica de Potencia (LCEEP), Universidad de Talca, Curicó, Chile  
 <sup>j</sup> Power Electronics, Machines and Control (PEMC) Research Institute, Faculty of Engineering, Nottingham, United Kingdom  

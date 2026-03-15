@@ -5,6 +5,9 @@ PV_DDM_Project/
 ├─ LICENSE
 ├─ run_main.m                      % entry-point CLI reproducible (sin GUI)
 │
+├─ docs/
+│  └─ workflow.md                  % workflow
+│
 ├─ app/
 │  └─ PVMSim.mlapp                  % GUI
 │
