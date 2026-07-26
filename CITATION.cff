@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+title: "PVMSim: A MATLAB App for Reproducible Double-Diode Parameter Extraction from Measured Photovoltaic Current–Voltage Curves"
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - family-names: Osorio
+    given-names: Liomnis
+  - family-names: Moreno-Espino
+    given-names: Mailyn
+  - family-names: Duchêne
+    given-names: Laurent
+  - family-names: Tuninetti
+    given-names: Víctor
+  - family-names: Zalazar
+    given-names: Carlos
+  - family-names: Irarrázaval
+    given-names: Rodrigo
+  - family-names: Retirado-Mediaceja
+    given-names: Yoalbys
+  - family-names: Rivera
+    given-names: Marco
+version: 0.1.0
+date-released: 2026-07-26
+license: MIT
+repository-code: "https://github.com/pvmsim/PVMSim"
+doi: "10.5281/zenodo.21605181"
