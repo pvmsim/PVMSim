@@ -46,7 +46,3 @@ function theta6_out = mutate_RS7MSA_phase1(theta6_in, C, p_big)
     theta6_out = [Rs2, Rsh2, Io1_2, Io2_2, n1_2, n2_2];
 
 end
-
-function y = clamp_val(x, lb, ub)
-    y = min(max(x, lb), ub);
-end

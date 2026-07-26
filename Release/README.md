@@ -1,80 +1,91 @@
-# PVMSim: A MATLAB App for Reproducible Double-Diode Parameter Extraction from Measured Photovoltaic Current–Voltage Curves
+# PVMSim Toolbox Release
 
-PVMSim is a MATLAB application for reproducible parameter extraction of the double-diode photovoltaic model from measured current–voltage curves. It combines an interactive App Designer interface with a scriptable command-line workflow for exploratory analysis and headless batch execution.
+PVMSim is a MATLAB application for reproducible parameter extraction of the double-diode photovoltaic model from measured current–voltage (I–V) curves. It combines an interactive App Designer interface with a scriptable command-line workflow for controlled single runs, batch execution, and reproducibility checks.
 
-## Authors
-Liomnis Osorio <sup>a,b,c*</sup>  
-Mailyn Moreno-Espino <sup>d,e*</sup>  
-Laurent Duchêne <sup>c</sup>  
-Víctor Tuninetti <sup>f</sup>  
-Carlos Zalazar <sup>b</sup>  
-Rodrigo Irarrázaval <sup>b</sup>  
-Yoalbys Retirado-Mediaceja <sup>g,h</sup>  
-Marco Rivera <sup>i,j</sup>  
+## Release Information
 
-<sup>*</sup> Corresponding authors  
+- **PVMSim software version:** `0.1.0`
+- **MATLAB toolbox version:** `0.1.0`
+- **Tested MATLAB release:** `R2025b`
+- **Tested operating system:** Windows 11
+- **Architecture used for packaging:** `win64`
+- **Additional MATLAB toolboxes:** Not required
 
-## Affiliations
-<sup>a</sup> Department of Industrial Processes, Faculty of Engineering, Universidad Católica de Temuco, Temuco, Chile  
-<sup>b</sup> Doctoral Program in Engineering, MacroFaculty of Engineering (UFRO–UBB–UTALCA Consortium), Chile  
-<sup>c</sup> ArGEnCo Department, MSM Team, University of Liège, Liège, Belgium  
-<sup>d</sup> Faculty of Informatics, Universidad Complutense de Madrid, Madrid, Spain  
-<sup>e</sup> Institute of Knowledge Technology, Universidad Complutense de Madrid, Madrid, Spain  
-<sup>f</sup> Department of Mechanical Engineering, Universidad de La Frontera, Temuco, Chile  
-<sup>g</sup> Universidad de Moa Dr. Antonio Núñez Jiménez, Moa, Cuba  
-<sup>h</sup> Section of Technical Sciences, Cuban Academy of Sciences, Havana, Cuba  
-<sup>i</sup> Energy Conversion and Power Electronics Laboratory, Universidad de Talca, Curicó, Chile  
-<sup>j</sup> Power Electronics, Machines and Control Research Institute, Faculty of Engineering, University of Nottingham, Nottingham, United Kingdom  
+## Package Contents
 
-## Overview
-PVMSim supports traceable and repeatable estimation of double-diode model parameters from measured current–voltage data. Users load measured I–V files, select a photovoltaic module definition from a configuration library, and execute a staged optimization workflow to estimate the model parameters. Run settings include the random seed and iteration budget. Each execution exports a configuration snapshot, logs, tabular summaries, MATLAB result files, and integrity hashes to support auditable reruns and consistent comparisons across datasets and run conditions.
+This release folder contains:
 
-## Key Features
-- Interactive MATLAB App Designer graphical interface
-- Scriptable command-line execution for batch and headless workflows
-- Reproducible staged optimization for double-diode parameter extraction
-- Support for measured I–V datasets and configurable PV module definitions
-- Export of logs, summaries, result files, and integrity hashes
-- Consistent rerun support through stored configuration snapshots
+```text
+Release/
+├── PVMSim.mltbx
+└── README.md
+```
 
-## Requirements
-- MATLAB, tested on **MATLAB R2025b**
-- No additional MATLAB toolboxes required for the current release
+`PVMSim.mltbx` is the installable MATLAB toolbox package.
 
 ## Installation
 
-### MATLAB users
-Install the toolbox package `PVMSim.mltbx` in MATLAB. Once the installation is completed, PVMSim will appear in the **APPS** tab and can be launched from the MATLAB Apps gallery.
+1. Open MATLAB.
+2. Double-click `PVMSim.mltbx`, or install it through **Home > Add-Ons > Install from File**.
+3. Complete the installation dialog.
+4. Open the MATLAB **APPS** tab.
+5. Launch **PVMSim** from the Apps gallery.
 
-### MATLAB release
-The current package was created with:
+## Installation Verification
 
-• **MATLAB (full): 25.2.0.2998904 (R2025b)**
-• **Platform: Microsoft Windows 11 Pro**
-• **Architecture: win64**
-
-### Standalone version
-A standalone Windows installer is not included in the current release unless explicitly provided as a separate distribution artifact.
-
-## Getting Started
 After installation:
 
-1. Open MATLAB.
-2. Go to the **APPS** tab.
-3. Launch **PVMSim** from the installed apps list.
-4. Load the project resources, PV module definition, and measured I–V dataset.
-5. Configure the run settings, including the seed and iteration budget.
-6. Execute the staged parameter extraction workflow.
-7. Review the exported logs, summaries, and result files for traceable analysis.
+1. Launch PVMSim.
+2. Select **Tools > Run Smoke Test**.
+3. Confirm that the smoke test finishes successfully.
 
-## Repository Contents
-The repository may include:
-- MATLAB source files for the graphical interface and command-line workflow
-- configuration files for photovoltaic modules
-- example measured I–V datasets
-- documentation and user guidance
-- packaged toolbox release files when applicable
+The automated smoke test runs the STM6-40/36 benchmark with seed `42` and verifies:
+
+- the expected objective value;
+- the required reproducibility artifacts;
+- the validity of `run_config.json`;
+- the expected checksum entries.
+
+The reference objective value is:
+
+```text
+RMSE_obj = 1.728401820819e-03 A
+```
+
+A successful execution displays a green confirmation message. A failed execution stops at the first unsuccessful check and displays the corresponding diagnostic message.
+
+## Basic Use
+
+After installation:
+
+1. Select the PVMSim project root.
+2. Load a PV module definition from `config/modules`.
+3. Import one or more measured I–V curves from `data/iv`.
+4. Select the target curve.
+5. Validate the configured workspace.
+6. Set the random seed and maximum iteration budget.
+7. Run the staged parameter-extraction workflow.
+8. Review the extracted parameters, convergence history, plots, metrics, and logs.
+9. Use the batch workflow when repeated runs are required.
+
+## Source Code and Documentation
+
+The source code, workflow documentation, user manual, licensing information, and release metadata are available in the project repository:
+
+<https://github.com/pvmsim>
+
+The complete user manual is available in the repository documentation and through its archived Zenodo record.
+
+## License
+
+PVMSim source code is distributed under the MIT License. Example data and applicable non-code assets are distributed under CC0 1.0. Third-party resources remain subject to their respective licenses and attribution notices.
+
+## Authors
+
+Liomnis Osorio, Mailyn Moreno-Espino, Laurent Duchêne, Víctor Tuninetti, Carlos Zalazar, Rodrigo Irarrázaval, Yoalbys Retirado-Mediaceja, and Marco Rivera.
 
 ## Support
-For installation or usage issues, contact:  
+
+For installation or usage questions, contact:
+
 **pvmsim.matlab@gmail.com**

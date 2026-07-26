@@ -1,44 +1,87 @@
 PVMSim/
 │
-├─ run_main.m                      % reproducible CLI entry point (no GUI)
+├── run_main.m                         % reproducible CLI entry point
+├── build_release.m                    % script used to generate Release/PVMSim.mltbx
+├── toolbox_identifier.txt             % permanent MATLAB toolbox identifier
+├── README.md                          % repository overview and instructions
+├── CITATION.cff                       % software citation metadata
+├── LICENSE                            % PVMSim MIT license
+├── LICENSE-CC0.txt                    % CC0 license for applicable metadata/content
+├── THIRD_PARTY_NOTICES.md             % third-party attribution notices
+├── .gitignore                         % generated-file exclusion rules
+├── layout.txt                         % repository structure reference
 │
-├─ docs/
-│  └─ workflow.md                  % workflow
+├── app/
+│   ├── PVMSim.mlapp                   % graphical user interface
+│   ├── cancel.svg
+│   ├── check.svg
+│   ├── copy.svg
+│   ├── download.svg
+│   ├── export.svg
+│   ├── file.svg
+│   ├── folderopen.svg
+│   ├── import.svg
+│   ├── openfile.svg
+│   ├── printer.svg
+│   ├── reload.svg
+│   ├── reset.svg
+│   ├── run.svg
+│   ├── run2.svg
+│   ├── save.svg
+│   ├── setting.svg
+│   ├── upload.svg
+│   └── validate.svg
 │
-├─ app/
-│  └─ PVMSim.mlapp                 % GUI
+├── config/
+│   └── modules/
+│       ├── STM6-40_36.txt
+│       ├── PWP201.txt
+│       └── STP6-120_36.txt
 │
-├─ data/
-│  └─ iv/
-│     ├─ CurvasIV_STM6_40_36.txt
-│     ├─ CurvasIV_PWP201.txt
-│     └─ CurvasIV_SEP120_36P120.txt
+├── core/
+│   ├── RS7MSA.m                       % core optimization algorithm
+│   ├── RS7MSA_model_current.m         % double-diode current model
+│   ├── objective_rmse_obj.m           % objective RMSE definition
+│   ├── metrics_kpis.m                 % RMSE, MAE, IAE, and RE metrics
+│   ├── mutate_RS7MSA_phase1.m
+│   ├── mutate_RS7MSA_phase2.m
+│   ├── clamp_val.m                    % shared parameter-clamping utility
+│   └── utils_rng.m                    % random-seed handling
 │
-├─ config/
-│  └─ modules/
-│     ├─ STM6_40.txt
-│     ├─ PWP201.txt
-│     └─ SEP120_36P120.txt
+├── data/
+│   └── iv/
+│       ├── CurvasIV_STM6-40_36.txt
+│       ├── CurvasIV_PWP201.txt
+│       └── CurvasIV_STP6-120_36.txt
 │
-├─ core/
-│  ├─ RS7MSA.m                     % core algorithm 
-│  ├─ RS7MSA_model_current.m       % I(V,theta) / solver (if separated)
-│  ├─ objective_rmse_obj.m         % explicitly defines rmse_obj
-│  ├─ metrics_kpis.m               % RMSE/MAE/IAE/RE with explicit definitions
-│  ├─ mutate_RS7MSA_phase1.m
-│  ├─ mutate_RS7MSA_phase2.m
-│  └─ utils_rng.m                  % seed handling (meta.Seed)
+├── docs/
+│   ├── Documentation.md
+│   ├── workflow.md                    % GUI workflow and usage guide        
+│   └── <user_manual_files>            % manual PDF, source, and associated figures
 │
-├─ outputs/
-│  ├─ runs/
-│  │   ├─ 2026-02-25_STM6_40_ID001_seed42/   % example run based on example_STM6_40.txt
-│  │   │   ├─ run_config.json
-│  │   │   ├─ run_results.mat
-│  │   │   ├─ run_summary.csv
-│  │   │   ├─ checksums.sha256
-│  │   │   └─ log.txt
-│  │   └─ ...
-│  └─ exports/                    % manual exports from the GUI (CSV/PNG/PDF)
+├── figures/
+│   └── <generated_or_manual_figures>
 │
-└─ figures/
-   └─ (optional) Figures generated in batch/CLI mode
+├── outputs/
+│   ├── exports/
+│   │   ├── .gitkeep
+│   │   └── <GUI_exported_files>       % generated locally and ignored by Git
+│   └── runs/
+│       ├── .gitkeep
+│       └── <datetime_model_curve_seed>/
+│           ├── run_config.json
+│           ├── run_results.mat
+│           ├── run_summary.csv
+│           ├── checksums.sha256
+│           └── log.txt
+│
+├── tests/
+│   └── smoke_test.m                   % automated fixed-seed regression test
+│
+├── third_party/
+│   └── licenses/
+│       └── uiw-icons-MIT.txt
+│
+└── Release/
+│   ├── PVMSim.mltbx			% installable MATLAB toolbox, version 0.1.0
+│   └── README.md

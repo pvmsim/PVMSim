@@ -2,12 +2,12 @@ function out = run_main(varargin)
 %RUN_MAIN Reproducible CLI entry-point for PV_DDM_Project (no GUI).
 %
 % Examples:
-%   run_main("module","config/modules/STM6_40_36.txt", ...
-%            "iv","data/iv/example_STM6_40_36.txt", ...
+%   run_main("module","config/modules/STM6-40_36.txt", ...
+%            "iv","data/iv/CurvasIV_STM6-40_36.txt", ...
 %            "seed",42);
 %
-%   run_main("module","config/modules/STM6_40_36.txt", ...
-%            "iv","data/iv/example_STM6_40_36.txt", ...
+%   run_main("module","config/modules/STM6-40_36.txt", ...
+%            "iv","data/iv/CurvasIV_STM6-40_36.txt", ...
 %            "batchN",30,"consecutiveSeeds",true,"seed",42);
 
 % -----------------------------
@@ -48,6 +48,7 @@ addParameter(ip,"batchN",  cfg.batchN,  @(x)isnumeric(x)&&isscalar(x)&&isfinite(
 addParameter(ip,"consecutiveSeeds", cfg.consecutiveSeeds, @(x)islogical(x)||ismember(x,[0 1]));
 addParameter(ip,"appVersion", cfg.appVersion, @(x)ischar(x)||isstring(x));
 addParameter(ip,"dryRun", false, @(x)islogical(x)||ismember(x,[0 1]));
+addParameter(ip,"consoleOutput", false, @(x)islogical(x)||ismember(x,[0 1]));
 
 parse(ip,varargin{:});
 opt = ip.Results;
@@ -74,8 +75,7 @@ useConsecutive = logical(opt.consecutiveSeeds);
 [meta, V_meas, I_meas, ivMeta] = load_iv_txt(ivPath);
 
 meta.Seed = seed0; % requested seed (effective seed handled by core/pipeline)
-meta.ModuleFile = string(modulePath);
-meta.IVFile     = string(ivPath);
+
 
 % -----------------------------
 % 3) Prepare output folder + logger
@@ -102,14 +102,19 @@ if ~exist(outDir,"dir")
     mkdir(outDir);
 end
 
-logFile = fullfile(outDir,"log.txt");
-logFcn  = make_logger(logFile);
+meta.ModuleFile = string(make_relative(outDir, modulePath));
+meta.IVFile     = string(make_relative(outDir, ivPath));
 
-logFcn("INFO", sprintf("Repo root: %s", repoRoot));
-logFcn("INFO", sprintf("Module: %s", modulePath));
-logFcn("INFO", sprintf("IV: %s", ivPath));
-logFcn("INFO", sprintf("IV ID: %s | Points: %d | G=%.3f | T=%.3f", meta.ID, numel(V_meas), meta.G, meta.T));
-logFcn("INFO", sprintf("Requested seed: %.0f | batchN=%d | consecutive=%d", seed0, batchN, useConsecutive));
+logFile = fullfile(outDir,"log.txt");
+logFcn  = make_logger(logFile, logical(opt.consoleOutput));
+
+if batchN > 1
+    runMode = "batch";
+else
+    runMode = "single";
+end
+logFcn("INFO", sprintf("Run started | Mode=%s | Module=%s | Curve=%s | Points=%d | Seed=%.0f", ...
+    runMode, make_relative(outDir, modulePath), string(meta.ID), numel(V_meas), seed0));
 
 if opt.dryRun
     logFcn("WARN","Dry run enabled. Exiting without running the solver.");
@@ -134,19 +139,21 @@ if batchN <= 1
     writetable(struct2table(summary), fullfile(outDir,"run_summary.csv"));
 
     % Build run_config.json
-    runCfg = build_run_config(repoRoot, opt, modulePath, ivPath, meta, panel, runout);
+    runCfg = build_run_config(repoRoot, outDir, opt, modulePath, ivPath, meta, panel, runout);
     write_json(fullfile(outDir,"run_config.json"), runCfg);
 
     % Checksums
     write_checksums(fullfile(outDir,"checksums.sha256"), repoRoot, ...
         {modulePath, ivPath, ...
          fullfile(repoRoot,"core","RS7MSA.m"), ...
-         fullfile(repoRoot,"core","mutate_theta6_phase1.m"), ...
-         fullfile(repoRoot,"core","mutate_theta6_phase2.m"), ...
+         fullfile(repoRoot,"core","mutate_RS7MSA_phase1.m"), ...
+         fullfile(repoRoot,"core","mutate_RS7MSA_phase2.m"), ...
+         fullfile(repoRoot,"core","clamp_val.m"), ...
          fullfile(repoRoot,"core","utils_rng.m")}, ...
         logFcn);
 
-    logFcn("INFO", sprintf("Done. Elapsed: %.3f s", elapsed));
+    logFcn("INFO", sprintf("Run completed | Mode=single | RMSE_obj=%.6g A | RMSE_I=%.6g A | Elapsed=%.3f s", ...
+        summary.rmse_obj, summary.rmse_I, elapsed));
 
     out = struct("outDir",outDir,"runout",runout,"summary",summary);
 
@@ -162,18 +169,20 @@ else
     % Batch summary CSV
     writetable(struct2table(batch.summary), fullfile(outDir,"run_summary.csv"));
 
-    runCfg = build_run_config(repoRoot, opt, modulePath, ivPath, meta, panel, batch);
+    runCfg = build_run_config(repoRoot, outDir, opt, modulePath, ivPath, meta, panel, batch);
     write_json(fullfile(outDir,"run_config.json"), runCfg);
 
     write_checksums(fullfile(outDir,"checksums.sha256"), repoRoot, ...
         {modulePath, ivPath, ...
          fullfile(repoRoot,"core","RS7MSA.m"), ...
-         fullfile(repoRoot,"core","mutate_theta6_phase1.m"), ...
-         fullfile(repoRoot,"core","mutate_theta6_phase2.m"), ...
+         fullfile(repoRoot,"core","mutate_RS7MSA_phase1.m"), ...
+         fullfile(repoRoot,"core","mutate_RS7MSA_phase2.m"), ...
+         fullfile(repoRoot,"core","clamp_val.m"), ...
          fullfile(repoRoot,"core","utils_rng.m")}, ...
         logFcn);
 
-    logFcn("INFO", sprintf("Done (batch). Elapsed: %.3f s", elapsed));
+    logFcn("INFO", sprintf("Run completed | Mode=batch | Requested=%d | Successful=%d | Elapsed=%.3f s", ...
+        batchN, batch.summary.N, elapsed));
 
     out = struct("outDir",outDir,"batch",batch);
 
@@ -187,13 +196,13 @@ end
 
 function cfg = default_cfg(repoRoot)
 cfg = struct();
-cfg.module = fullfile(repoRoot,"config","modules","STM6_40.txt");
-cfg.iv     = fullfile(repoRoot,"data","iv","CurvasIV_STM6_40.txt");
+cfg.module = fullfile(repoRoot,"config","modules","STM6-40_36.txt");
+cfg.iv     = fullfile(repoRoot,"data","iv","CurvasIV_STM6-40_36.txt");
 cfg.outRoot = fullfile(repoRoot,"outputs");
 cfg.seed = 42;
 cfg.batchN = 1;
 cfg.consecutiveSeeds = true;
-cfg.appVersion = "dev";
+cfg.appVersion = "0.1.0";
 end
 
 function s = merge_struct(a,b)
@@ -205,18 +214,30 @@ end
 end
 
 function p = normalize_path(repoRoot, pIn)
+
 pIn = string(pIn);
-if strlength(pIn)==0
+
+if strlength(pIn) == 0
     p = "";
     return
 end
-% allow relative to repo
-if ~isfile(pIn) && ~isfolder(pIn)
-    pTry = fullfile(repoRoot, char(pIn));
-    p = string(pTry);
+
+pChar = char(pIn);
+
+% Detect absolute paths independently of whether the file exists.
+if ispc
+    isAbsolute = ~isempty( ...
+        regexp(pChar, '^[A-Za-z]:[\\/]|^\\\\', 'once'));
 else
-    p = pIn;
+    isAbsolute = startsWith(pChar, '/');
 end
+
+if isAbsolute
+    p = string(pChar);
+else
+    p = string(fullfile(repoRoot, pChar));
+end
+
 end
 
 function name = sanitize(s)
@@ -226,7 +247,7 @@ s = regexprep(s,"_+","_");
 name = s;
 end
 
-function logFcn = make_logger(logFile)
+function logFcn = make_logger(logFile, consoleOutput)
 fid = fopen(logFile,"a");
 if fid < 0
     error("run_main:Log","Cannot open log file: %s", logFile);
@@ -237,8 +258,9 @@ cleanupObj = onCleanup(@() fclose(fid)); %#ok<NASGU>
         ts = char(datetime("now","Format","yyyy-MM-dd HH:mm:ss"));
         line = sprintf("[%s] %-5s %s", ts, upper(string(level)), string(msg));
         fprintf(fid,"%s\n",line);
-        % CLI feedback is ok
-        fprintf("%s\n",line);
+        if consoleOutput
+            fprintf("%s\n",line);
+        end
     end
 
 logFcn = @write;
@@ -283,12 +305,12 @@ end
 
 % Minimal mapping to the core "panel" struct
 panel = struct();
-panel.modelo = "";
+panel.model = "";
 metaOut = struct();
 [~,metaOut.name] = fileparts(fpath);
 
 % Common names in your module files
-panel.Pmax_W   = pick_num(M, {"Pmax_W","Pmax","PmaxE","Pmpp"}, NaN);
+panel.Pmax_W   = pick_num(M, {"Pmax_W","Pmax","PmaxE","Pmpp","Pmpp_e"}, NaN);
 panel.Voc_ref  = pick_num(M, {"Voc_val","Voc","Vocn"}, NaN);
 panel.Isc      = pick_num(M, {"Isc_val","Isc","Iscn"}, NaN);
 panel.Vmpp_ref = pick_num(M, {"Vmpp_val","Vmpp","Vmp"}, NaN);
@@ -302,8 +324,12 @@ panel.Tref_C   = pick_num(M, {"Tref"}, 25);
 panel.kIsc     = pick_num(M, {"Ki","kIsc"}, NaN);
 panel.kVoc_pct = pick_num(M, {"Kv","kVoc_pct"}, NaN);
 
-if isfield(M,"modelo"), panel.modelo = string(M.modelo); end
-if strlength(panel.modelo)==0, panel.modelo = string(metaOut.name); end
+if isfield(M,"model")
+    panel.model = string(M.model);
+elseif isfield(M,"modelo")
+    panel.model = string(M.modelo); % Legacy input compatibility
+end
+if strlength(panel.model)==0, panel.model = string(metaOut.name); end
 
 end
 
@@ -423,15 +449,11 @@ for i = 1:N
         tRun(i) = toc(t0);
         status(i) = "FAIL";
     end
-
-    if mod(i,max(1,ceil(N/10)))==0 || i==N
-        logFcn("INFO", sprintf("Batch %d/%d | last status=%s", i, N, status(i)));
-    end
 end
 
 ok = isfinite(rmse_obj);
 summary = struct();
-summary.model = string(panel.modelo);
+summary.model = string(panel.model);
 summary.N = sum(ok);
 summary.best  = min(rmse_obj(ok));
 summary.worst = max(rmse_obj(ok));
@@ -475,17 +497,17 @@ else
 end
 end
 
-function cfg = build_run_config(repoRoot, opt, modulePath, ivPath, meta, panel, resultStruct)
+function cfg = build_run_config(repoRoot, outDir, opt, modulePath, ivPath, meta, panel, resultStruct)
 cfg = struct();
 
 cfg.timestamp = char(datetime("now","Format","yyyy-MM-dd HH:mm:ss"));
 cfg.app_version = char(string(opt.appVersion));
 cfg.matlab_version = version;
-cfg.repo_root = char(repoRoot);
+cfg.repo_root = make_relative(outDir, repoRoot);
 
 cfg.inputs = struct();
-cfg.inputs.module_file = char(modulePath);
-cfg.inputs.iv_file     = char(ivPath);
+cfg.inputs.module_file = make_relative(outDir, modulePath);
+cfg.inputs.iv_file     = make_relative(outDir, ivPath);
 cfg.inputs.iv_id       = char(string(meta.ID));
 cfg.inputs.G_Wm2       = double(meta.G);
 cfg.inputs.T_C         = double(meta.T);
@@ -494,8 +516,13 @@ cfg.requested = struct();
 cfg.requested.seed  = double(opt.seed);
 cfg.requested.batchN = double(opt.batchN);
 cfg.requested.consecutiveSeeds = logical(opt.consecutiveSeeds);
+cfg.requested.consoleOutput = logical(opt.consoleOutput);
 
 cfg.panel = panel;
+if isfield(cfg.panel, 'modelo')
+    cfg.panel.model = cfg.panel.modelo;
+    cfg.panel = rmfield(cfg.panel, 'modelo');
+end
 
 % result summary
 cfg.output = struct();
@@ -523,25 +550,15 @@ end
 end
 
 function write_json(filePath, s)
-txt = jsonencode(s);
-txt = pretty_json(txt);
-fid = fopen(filePath,"w");
+txt = jsonencode(s, PrettyPrint=true);
+
+fid = fopen(filePath, "w");
 if fid < 0
-    error("run_main:JSON","Cannot write: %s", filePath);
-end
-c = onCleanup(@() fclose(fid));
-fprintf(fid,"%s\n",txt);
+    error("run_main:JSON", "Cannot write: %s", filePath);
 end
 
-function txt = pretty_json(txt)
-% Minimal pretty printer: keeps jsonencode output readable enough
-% without external dependencies.
-txt = string(txt);
-txt = replace(txt, "},{", "},\n{");
-txt = replace(txt, ',"', sprintf(',\n  "'));
-txt = replace(txt, "{", "{\n  ");
-txt = replace(txt, "}", "\n}");
-txt = char(txt);
+cleanupObj = onCleanup(@() fclose(fid)); %#ok<NASGU>
+fprintf(fid, "%s\n", txt);
 end
 
 function write_checksums(outFile, repoRoot, fileList, logFcn)
@@ -556,7 +573,8 @@ c = onCleanup(@() fclose(fid));
 for i = 1:numel(fileList)
     f = string(fileList{i});
     if ~isfile(f)
-        continue
+        error('write_checksums:MissingFile', ...
+            'Checksum target not found: %s', f);
     end
     h = sha256_file(f);
     rel = make_relative(repoRoot, f);
@@ -564,13 +582,25 @@ for i = 1:numel(fileList)
 end
 end
 
-function rel = make_relative(root, p)
-root = char(string(root));
-p    = char(string(p));
-rel = p;
-if startsWith(p, root)
-    rel = p(numel(root)+2:end);
+function rel = make_relative(baseDir, targetPath)
+baseFile   = java.io.File(char(string(baseDir)));
+targetFile = java.io.File(char(string(targetPath)));
+
+basePath   = baseFile.getCanonicalFile().toPath();
+targetPath = targetFile.getCanonicalFile().toPath();
+
+try
+    rel = char(basePath.relativize(targetPath).toString());
+catch ME
+    error("run_main:RelativePath", ...
+        "Cannot create a relative path: %s", ME.message);
 end
+
+if isempty(rel)
+    rel = ".";
+end
+
+rel = strrep(rel, filesep, "/");
 end
 
 function h = sha256_file(filePath)

@@ -1,11 +1,11 @@
 %% Information from the solar array datasheet (source table)
-fabricante = 'Photowatt';
-modelo     = 'PWP201';
+manufacturer = 'Photowatt';
+model     = 'PWP201';
 Isc_val  = 1.0317;                 % Nominal short-circuit current [A]
 Voc_val  = 16.7785;                 % Nominal open-circuit voltage [V]
 Impp_val = 0.912;                % Current @ maximum power point [A]
 Vmpp_val = 12.649;                % Voltage @ maximum power point [V]
-Pmax_e   = Vmpp_val*Impp_val;     % Maximum output peak power [W]  (= 11.5359 W)
+PmaxE   = Vmpp_val*Impp_val;     % Maximum output peak power [W]  (= 11.5359 W)
 Kv = -0.0570469;                 % Voltage/temperature coefficient [V/K]  (from -0.34%/°C × Voc)
 Ki = 0.000371412;                 % Current/temperature coefficient [A/K]  (from 0.036%/°C × Isc)
 Ns   = 36;                 % Number of series cells

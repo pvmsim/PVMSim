@@ -1,24 +1,18 @@
-# MATLAB editor and autosave files
+# Generated PVMSim outputs
+outputs/runs/*
+outputs/exports/*
+
+# Keep directory placeholders
+!outputs/runs/.gitkeep
+!outputs/exports/.gitkeep
+
+# MATLAB temporary and autosave files
 *.asv
-*.m~
 *.autosave
-*.tmp
-
-# MATLAB generated folders
+*.m~
+slprj/
 codegen/
-resources/project/
 
-# OS-generated files
+# Operating-system files
 .DS_Store
 Thumbs.db
-
-# Reproducibility outputs and logs
-outputs/
-
-# Automatically generated figures
-figures/
-
-# Temporary compressed artifacts
-*.zip
-*.7z
-*.rar

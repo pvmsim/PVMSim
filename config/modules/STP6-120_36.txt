@@ -1,9 +1,9 @@
 %% Information from the solar array datasheet (source table)
-fabricante = 'N/A';                % Manufacturer (not shown in source table)
-modelo     = 'SEP120-36-P 120';    % Model No.
+manufacturer = 'N/A';                % Manufacturer (not shown in source table)
+model     = 'SEP120-36-P 120';    % Model No.
 
 % Electrical Data at STC
-Pmax_Wp  = 120;                   % Maximum Power (Pmax) [Wp]
+PmaxE  = 120;                   % Maximum Power (Pmax) [Wp]
 Vmpp_val = 18.0;                  % Voltage at Maximum Power (Vmpp) [V]
 Impp_val = 6.67;                  % Current at Maximum Power (Impp) [A]
 Voc_val  = 22.4;                  % Open Circuit Voltage (Voc) [V]

@@ -8,27 +8,100 @@ The GUI is designed around the following repository layout:
 
 ```text
 PVMSim/
-├─ docs/
-│  └─ workflow.md
-├─ app/
-│  └─ PVMSim.mlapp
-├─ config/
-│  └─ modules/
-│     └─ <module_file>.txt
-├─ data/
-│  └─ iv/
-│     └─ <iv_curve>.txt
-├─ core/
-├─ outputs/
-│  ├─ runs/
-│  └─ exports/
-└─ run_main.m
+│
+├── run_main.m                         % reproducible CLI entry point
+├── build_release.m                    % script used to generate the MATLAB toolbox
+├── toolbox_identifier.txt             % permanent MATLAB toolbox identifier
+├── README.md                          % repository overview and instructions
+├── CITATION.cff                       % software citation metadata
+├── LICENSE                            % PVMSim MIT license
+├── LICENSE-CC0.txt                    % CC0 license for applicable metadata/content
+├── THIRD_PARTY_NOTICES.md             % third-party attribution notices
+├── .gitignore                         % generated-file exclusion rules
+├── layout.txt                         % repository structure reference
+│
+├── app/
+│   ├── PVMSim.mlapp                   % graphical user interface
+│   ├── cancel.svg
+│   ├── check.svg
+│   ├── copy.svg
+│   ├── download.svg
+│   ├── export.svg
+│   ├── file.svg
+│   ├── folderopen.svg
+│   ├── import.svg
+│   ├── openfile.svg
+│   ├── printer.svg
+│   ├── reload.svg
+│   ├── reset.svg
+│   ├── run.svg
+│   ├── run2.svg
+│   ├── save.svg
+│   ├── setting.svg
+│   ├── upload.svg
+│   └── validate.svg
+│
+├── config/
+│   └── modules/
+│       ├── STM6-40_36.txt
+│       ├── PWP201.txt
+│       └── STP6-120_36.txt
+│
+├── core/
+│   ├── RS7MSA.m
+│   ├── RS7MSA_model_current.m
+│   ├── objective_rmse_obj.m
+│   ├── metrics_kpis.m
+│   ├── mutate_RS7MSA_phase1.m
+│   ├── mutate_RS7MSA_phase2.m
+│   ├── clamp_val.m
+│   └── utils_rng.m
+│
+├── data/
+│   └── iv/
+│       ├── CurvasIV_STM6-40_36.txt
+│       ├── CurvasIV_PWP201.txt
+│       └── CurvasIV_STP6-120_36.txt
+│
+├── docs/
+│   ├── Documentation.md
+│   ├── workflow.md                    % GUI workflow and usage guide        
+│   └── <user_manual_files>            % manual PDF, source, and associated figures
+│
+├── figures/
+│   └── <generated_or_manual_figures>
+│
+├── outputs/
+│   ├── exports/
+│   │   ├── .gitkeep
+│   │   └── <GUI_exported_files>
+│   └── runs/
+│       ├── .gitkeep
+│       └── <datetime_model_curve_seed>/
+│           ├── run_config.json
+│           ├── log.txt
+│           ├── run_results.mat
+│           ├── run_summary.csv
+│           └── checksums.sha256
+│
+├── tests/
+│   └── smoke_test.m                   % automated fixed-seed regression test
+│
+├── third_party/
+│   └── licenses/
+│       └── uiw-icons-MIT.txt
+│
+└── Release/
+    └── PVMSim.mltbx                   % installable MATLAB toolbox, version 0.1.0
 ```
 
 The recommended convention is:
 - module definition files in `config/modules`
 - measured I-V curves in `data/iv`
 - manual GUI exports in `outputs/exports`
+- reproducible CLI run packages in `outputs/runs`
+- the installable MATLAB toolbox in `Release/PVMSim.mltbx`
+- the user manual and its source files in `Documentation`
 
 ## Input files
 
@@ -36,6 +109,8 @@ The recommended convention is:
 The module definition is loaded from a plain-text `.txt` file containing MATLAB-style assignments such as:
 
 ```text
+manufacturer = 'Example manufacturer';
+model = 'Example module';
 Ns = 36;
 Isc = 3.87;
 Voc = 21.24;
@@ -84,6 +159,39 @@ This workspace is used to define the data context before running the model.
 4. **Batch Runs**
 
 ## Recommended step-by-step workflow
+
+## Installation options
+
+PVMSim can be used directly from the repository or installed as a MATLAB toolbox.
+
+### Option 1. Run from the repository
+Set the MATLAB Current Folder to the repository root and open:
+
+```text
+app/PVMSim.mlapp
+```
+
+The command-line workflow is available through:
+
+```matlab
+run_main;
+```
+
+### Option 2. Install the MATLAB toolbox
+Install the packaged toolbox:
+
+```text
+Release/PVMSim.mltbx
+```
+
+The current toolbox release is PVMSim `0.1.0` and uses the permanent MATLAB toolbox identifier stored in:
+
+```text
+toolbox_identifier.txt
+```
+
+After installation, launch PVMSim from the MATLAB Apps gallery and run **Tools > Run Smoke Test** to verify the installation.
+
 
 ### Step 1. Set the project folders
 Use the folder-selection controls in the left-side project workspace:
@@ -146,7 +254,28 @@ If validation fails, both execution buttons remain disabled.
 
 This validation step does not replace the internal checks performed again at execution time. The app still verifies the availability of the required measured-curve and datasheet information before starting a run.
 
-### Step 6. Configure the algorithm controls
+
+### Step 6. Verify the installation with the automated smoke test
+Open **Tools > Run Smoke Test** to run the fixed-seed verification routine.
+
+The smoke test:
+- runs the STM6-40/36 benchmark with seed `42`
+- verifies the reference objective value `RMSE_obj = 1.728401820819e-03 A` within the configured tolerance
+- temporarily generates and verifies the required run artifacts
+- checks the expected source-code entries in `checksums.sha256`
+
+A successful run displays a green confirmation alert. A failed run stops at the first unsuccessful check, displays an error alert, and records the detailed diagnostic message in the application log.
+
+The same test can be executed from the MATLAB command window while the Current Folder is set to the PVMSim project root:
+
+```matlab
+addpath(fullfile(pwd,'tests'));
+smoke_test;
+```
+
+The smoke test is intended to verify the installation and detect unintended changes to the benchmark workflow. It is not a substitute for the multi-run statistical analysis used in performance comparisons.
+
+### Step 7. Configure the algorithm controls
 In the **Algorithm** tab, set:
 - **Random seed**
 - **Maximum iterations**
@@ -157,7 +286,7 @@ The current default values are:
 
 The `Zoom x axes` control only changes the visible range of the convergence plot after the run.
 
-### Step 7. Run a single extraction
+### Step 8. Run a single extraction
 Press **Run Algorithm**.
 
 The GUI then:
@@ -193,6 +322,7 @@ After a successful single run, the GUI presents:
 - current and power error metrics
 - convergence history
 - algorithm log
+- smoke-test status and diagnostics in the application log
 
 The KPI table includes:
 - RMSE for current and power
@@ -247,14 +377,17 @@ The GUI supports manual export of user-facing artifacts, including:
 - batch summary
 - screenshots and plots through MATLAB axes export tools
 
+Manual GUI exports are written to `outputs/exports`. Generated contents of `outputs/exports` and `outputs/runs` are excluded from version control, while `.gitkeep` files preserve the empty directory structure in the repository.
+
 The GUI can also open the workflow guide from the Help menu.
 
 ## Current reproducibility scope of the GUI
 The GUI supports controlled reruns of the optimization core through explicit seed and iteration controls. This is useful for interactive reproducibility at the solver level.
 
 However, the current GUI behavior differs from the command-line mode in one important respect:
-- the GUI is primarily interactive and export-oriented
-- the CLI provides the most complete automated reproducibility package, including structured run folders and integrity hashes
+- normal GUI runs are primarily interactive and export-oriented
+- the GUI can launch the automated smoke test, which internally exercises the reproducible command-line workflow and verifies its run artifacts
+- the CLI remains the main interface for generating complete standardized run packages for user-selected studies
 
 Therefore, the GUI should be interpreted as:
 - a validated interactive front end for controlled execution and inspection
@@ -281,17 +414,18 @@ Use the CLI when the goal is to:
 3. Import one or more measured I-V curves.
 4. Select the target curve.
 5. Validate the workspace.
-6. Set the seed and maximum iterations.
-7. Run the algorithm.
-8. Inspect parameters, convergence, plots, metrics, and logs.
-9. Run batch analysis if variability assessment is needed.
-10. Export logs, metrics, tables, and figures.
+6. Run the automated smoke test when verifying a new installation or software release.
+7. Set the seed and maximum iterations.
+8. Run the algorithm.
+9. Inspect parameters, convergence, plots, metrics, and logs.
+10. Run batch analysis if variability assessment is needed.
+11. Export logs, metrics, tables, and figures.
 
 ## Help menu integration
 The GUI Help menu points to:
 
 ```text
-https://github.com/pvmsim/PVMSim/blob/main/PVMSim/docs/workflow.md
+https://github.com/pvmsim/docs/workflow.md
 ```
 
 To keep the in-app documentation consistent, this file should be stored in the repository under:
@@ -299,3 +433,36 @@ To keep the in-app documentation consistent, this file should be stored in the r
 ```text
 docs/workflow.md
 ```
+
+## Versioned software release
+This workflow corresponds to PVMSim `v0.1.0`. The Git tag, GitHub release, GUI version string, `CITATION.cff`, command-line metadata, MATLAB toolbox version, and archived software record should all identify software version `0.1.0`. The App Designer sharing metadata may display `0.1` because that field accepts only a `Major.Minor` format.
+
+The installable package is:
+
+```text
+Release/PVMSim.mltbx
+```
+
+Its permanent MATLAB toolbox identifier is stored in:
+
+```text
+toolbox_identifier.txt
+```
+
+The same identifier must be retained for future PVMSim toolbox updates.
+
+The user manual follows its own document-version sequence and identifies explicitly the PVMSim version that it documents. For example, PVMSim User Manual `v1.1` may document PVMSim software `v0.1.0`.
+
+When a version-specific DOI is assigned to the archived software release, use that DOI to cite the exact code version associated with the manuscript. Do not replace the version-specific DOI with only the generic GitHub repository URL or with the DOI assigned to the user manual.
+
+## Release package maintenance
+The MATLAB toolbox is generated with `build_release.m`. Before packaging a new release:
+
+1. confirm that `toolbox_identifier.txt` contains the established toolbox identifier;
+2. update the software version consistently;
+3. run the automated smoke test;
+4. regenerate `Release/PVMSim.mltbx`;
+5. install the generated toolbox in a clean MATLAB environment;
+6. rerun the GUI smoke test and the command-line benchmark.
+
+The generated toolbox should not include local files from `outputs/runs` or `outputs/exports`.

@@ -40,8 +40,6 @@ meta.MaxIter = min(max(meta.MaxIter, 1000), 500000);
 
 localLog('INFO', sprintf('Meta controls | Seed=%u | MaxIter=%d', uint32(meta.Seed), meta.MaxIter));
 
-
-
 localLog('INFO', sprintf( ...
     'Starting RS7MSA for curve "%s" (%d points, G=%.1f W/m², T=%.1f °C).', ...
     meta.ID, numel(V_meas), meta.G, meta.T));
@@ -51,11 +49,18 @@ q = 1.602176634e-19;
 k = 1.380649e-23;
 epsv = 1e-12;
 
-T_K = panel.Tref_C + 273.15;
+%T_K = panel.Tref_C + 273.15;
+if isfield(meta,'T') && ~isempty(meta.T) && isfinite(meta.T)
+    T_C = meta.T;
+else
+    T_C = panel.Tref_C;
+end
+
+T_K = T_C + 273.15;
 Vt  = panel.Ns * (k * T_K / q);
 
 fprintf('T [K] = %.2f\n', T_K);
-fprintf('Vt (módulo) = %.12f\n', Vt);
+fprintf('Vt (PV_module) = %.12f\n', Vt);
 
 %% 4) Bounds/steps (C)
 C = struct();
@@ -100,8 +105,8 @@ paramsF1.verbose_every = 5000;
 
 [best_theta7_f1, best_rmse_f1, topk_phase1] = random_search_phase1(curves, Vt, C, paramsF1);
 
-fprintf('\nRMSE residual (fase 1): %.15f\n', best_rmse_f1);
-fprintf('theta fase 1 [Iph, Io1, Io2, Rs, Rsh, n1, n2]:\n');
+fprintf('\nStage 1 RMSE_obj: %.15f A\n', best_rmse_f1);
+fprintf('Stage 1 parameter vector [Iph, Io1, Io2, Rs, Rsh, n1, n2]:\n');
 disp(best_theta7_f1);
 
 % Sort top-k by RMSE before Phase 2
@@ -137,8 +142,8 @@ paramsF2.verbose_every   = 5000;
 
 [best_theta7_f2, best_rmse_f2, hist2] = phase2_simulated_annealing(topk_phase1, curves, Vt, C, paramsF2);
 
-fprintf('\nRMSE residual (fase 2): %.15f\n', best_rmse_f2);
-fprintf('theta fase 2 [Iph, Io1, Io2, Rs, Rsh, n1, n2]:\n');
+fprintf('\nStage 2 RMSE_obj: %.15f A\n', best_rmse_f2);
+fprintf('Stage 2 parameter vector [Iph, Io1, Io2, Rs, Rsh, n1, n2]:\n');
 format shortG
 disp(best_theta7_f2)
 
@@ -181,15 +186,15 @@ runout.rng0     = rng_state0;
 runout.rngFinal = rng_stateF;
 
 localLog('INFO', sprintf('Finished RS7MSA | %s | RMSE_I = %.4f A', ...
-    string(panel.modelo), rmse_I));
+    string(panel.model), rmse_I));
 
 %% 10) Summary
-fprintf('\n=== RESUMEN FINAL ===\n');
-fprintf('Modelo: %s\n', panel.modelo);
-fprintf('Fase 1 RMSE residual: %.8f\n', best_rmse_f1);
-fprintf('Fase 2 RMSE residual: %.8f\n', best_rmse_f2);
-fprintf('RMSE curva I-V (corriente): %.8f A\n', rmse_I);
-fprintf('Theta final [Iph, Io1, Io2, Rs, Rsh, n1, n2]:\n');
+fprintf('\n=== FINAL SUMMARY ===\n');
+fprintf('Model: %s\n', panel.model);
+fprintf('Stage 1 RMSE_obj: %.8f A\n', best_rmse_f1);
+fprintf('Stage 2 RMSE_obj: %.8f A\n', best_rmse_f2);
+fprintf('RMSE_I: %.8f A\n', rmse_I);
+fprintf('Final parameter vector [Iph, Io1, Io2, Rs, Rsh, n1, n2]:\n');
 format shortG
 disp(best_theta7_f2)
 
@@ -263,7 +268,7 @@ function [best_theta7, best_rmse, topk_list] = random_search_phase1(curves, Vt, 
             Io2 = best_theta6(4);
             n1  = best_theta6(5);
             n2  = best_theta6(6);
-            fprintf(['[RS6-div] iter=%d best=%.6f Iph*=%.4f Rs=%.4f Rsh=%.2f ' ...
+            fprintf(['[Stage 1: Random Search] iter=%d best=%.6f Iph*=%.4f Rs=%.4f Rsh=%.2f ' ...
                      'Io1=%.3e Io2=%.3e n1=%.3f n2=%.3f buckets=%d\n'], ...
                      t, best_rmse, best_iph, Rs, Rsh, Io1, Io2, n1, n2, buckets.Count);
         end
@@ -373,7 +378,7 @@ function [global_best_theta7, global_best_rmse, history] = phase2_simulated_anne
                 Io2 = best6(4);
                 n1  = best6(5);
                 n2  = best6(6);
-                fprintf(['[SA-F2] start=%d/%d iter=%d best=%.6f curr=%.6f T=%.2e Iph*=%.4f ' ...
+                fprintf(['[Stage 2: Simulated Annealing] start=%d/%d iter=%d best=%.6f curr=%.6f T=%.2e Iph*=%.4f ' ...
                          'Rs=%.4f Rsh=%.2f Io1=%.3e Io2=%.3e n1=%.3f n2=%.3f\n'], ...
                          s, n_starts, t, best_rmse, curr_rmse, T, best_iph, ...
                          Rs, Rsh, Io1, Io2, n1, n2);
@@ -546,9 +551,4 @@ function buckets = push_topk_stratified(buckets, rmse, iph, theta6, C, k_per_buc
         end
         buckets(key) = lst;
     end
-end
-
-% ---------------------------------------------------------------------
-function y = clamp_val(x, lb, ub)
-    y = min(max(x, lb), ub);
 end
