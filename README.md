@@ -59,7 +59,7 @@ PVMSim supports traceable and repeatable estimation of double-diode model parame
 ```text
 PVMSim/
 ├── run_main.m
-├── package_toolbox.m
+├── build_release.m
 ├── toolbox_identifier.txt
 ├── README.md
 ├── CITATION.cff
@@ -229,7 +229,7 @@ Generated run and export contents are excluded from version control. The directo
 The MATLAB toolbox is generated with:
 
 ```text
-package_toolbox.m
+build_release.m
 ```
 
 The permanent toolbox identifier is stored in:
