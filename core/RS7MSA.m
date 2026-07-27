@@ -300,7 +300,7 @@ end
 function [global_best_theta7, global_best_rmse, history] = phase2_simulated_annealing(topk_phase1, curves, Vt, C, P)
 
     if isempty(topk_phase1)
-        error('topk_phase1 está vacío.');
+        error('topk_phase1 is empty.');
     end
 
     n_starts = min(P.starts, numel(topk_phase1));
